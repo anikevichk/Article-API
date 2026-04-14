@@ -9,4 +9,3 @@ python-jose[cryptography]
 python-multipart
 email-validator
 httpx
-python-multipart
