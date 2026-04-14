@@ -1,4 +1,4 @@
-from pydantic import BaseModel, EmailStr
+from pydantic import BaseModel, EmailStr, ConfigDict
 
 
 class ArticleCreate(BaseModel):
@@ -16,8 +16,7 @@ class ArticleResponse(BaseModel):
     title: str
     content: str
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class UserRegister(BaseModel):
@@ -31,8 +30,7 @@ class UserResponse(BaseModel):
     email: EmailStr
     username: str
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class TokenResponse(BaseModel):
@@ -40,14 +38,12 @@ class TokenResponse(BaseModel):
     token_type: str
 
 
-
 class SubscriptionResponse(BaseModel):
     id: int
     subscriber_id: int
     author_id: int
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class NotificationResponse(BaseModel):
@@ -57,8 +53,7 @@ class NotificationResponse(BaseModel):
     message: str
     is_read: bool
 
-    class Config:
-        from_attributes = True
+    model_config = ConfigDict(from_attributes=True)
 
 
 class ImportFromUrlRequest(BaseModel):

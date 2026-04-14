@@ -3,12 +3,11 @@ from sqlalchemy import text
 from sqlalchemy.orm import Session
 from fastapi import Depends
 
-from app.db import Base, engine, get_db
+from app.db import get_db
 from app.routers import auth, users, articles, subscriptions, notifications
 
 app = FastAPI()
 
-Base.metadata.create_all(bind=engine)
 
 app.include_router(auth.router)
 app.include_router(users.router)

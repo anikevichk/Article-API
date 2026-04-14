@@ -1,2 +1,3 @@
 .env
 app/main_old.py
+__pycache__/
