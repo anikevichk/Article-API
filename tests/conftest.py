@@ -1,9 +1,6 @@
-import os
-import sys
-
 import pytest
 from fastapi.testclient import TestClient
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, event
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
 
@@ -11,7 +8,6 @@ from app.main import app
 from app.db import get_db
 from app.models import Base
 
-sys.path.append(os.path.dirname(os.path.dirname(__file__)))
 
 SQLALCHEMY_DATABASE_URL = "sqlite://"
 
@@ -20,6 +16,14 @@ engine = create_engine(
     connect_args={"check_same_thread": False},
     poolclass=StaticPool,
 )
+
+
+@event.listens_for(engine, "connect")
+def set_sqlite_pragma(dbapi_connection, connection_record):
+    cursor = dbapi_connection.cursor()
+    cursor.execute("PRAGMA foreign_keys=ON")
+    cursor.close()
+
 
 TestingSessionLocal = sessionmaker(
     autocommit=False,
@@ -81,6 +85,16 @@ def get_token(
     username="user",
     password="12345678",
 ):
-    register_user(client, email=email, username=username, password=password)
+    register_response = register_user(
+        client, email=email, username=username, password=password
+    )
+    assert register_response.status_code in (200, 201), register_response.text
+
     response = login_user(client, username=username, password=password)
+    assert response.status_code == 200, response.text
+
     return response.json()["access_token"]
+
+
+def auth_headers(token: str):
+    return {"Authorization": f"Bearer {token}"}

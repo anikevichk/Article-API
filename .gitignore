@@ -1,3 +1,4 @@
 .env
-app/main_old.py
+.pytest_cache/
 __pycache__/
+logs.txt

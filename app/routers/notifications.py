@@ -13,7 +13,7 @@ router = APIRouter(prefix="/notifications", tags=["notifications"])
 @router.get("", response_model=list[NotificationResponse])
 def get_notifications(
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_user),
 ):
     result = db.execute(
         select(Notification)
@@ -27,12 +27,12 @@ def get_notifications(
 def mark_notification_as_read(
     notification_id: int,
     db: Session = Depends(get_db),
-    current_user: User = Depends(get_current_user)
+    current_user: User = Depends(get_current_user),
 ):
     notification = db.execute(
         select(Notification).where(
             Notification.id == notification_id,
-            Notification.user_id == current_user.id
+            Notification.user_id == current_user.id,
         )
     ).scalar_one_or_none()
 

@@ -1,14 +1,14 @@
-from pydantic import BaseModel, EmailStr, ConfigDict
+from pydantic import AnyHttpUrl, BaseModel, EmailStr, ConfigDict, Field
 
 
 class ArticleCreate(BaseModel):
-    title: str
-    content: str
+    title: str = Field(min_length=1, max_length=200)
+    content: str = Field(min_length=1)
 
 
 class ArticleUpdate(BaseModel):
-    title: str | None = None
-    content: str | None = None
+    title: str | None = Field(default=None, min_length=1, max_length=200)
+    content: str | None = Field(default=None, min_length=1)
 
 
 class ArticleResponse(BaseModel):
@@ -21,8 +21,8 @@ class ArticleResponse(BaseModel):
 
 class UserRegister(BaseModel):
     email: EmailStr
-    username: str
-    password: str
+    username: str = Field(min_length=3, max_length=50)
+    password: str = Field(min_length=8, max_length=128)
 
 
 class UserResponse(BaseModel):
@@ -57,7 +57,7 @@ class NotificationResponse(BaseModel):
 
 
 class ImportFromUrlRequest(BaseModel):
-    url: str
+    url: AnyHttpUrl
 
 
 class ArticleImportResponse(BaseModel):
