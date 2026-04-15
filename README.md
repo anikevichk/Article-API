@@ -20,7 +20,7 @@ It allows users to register and log in, create and manage articles, subscribe to
 - import articles from a JSON file
 - import articles from an external URL
 - interactive API documentation with Swagger
-- persistent data storage in a PostgreSQL database
+- persistent data storage in a PostgreSQL database hosted on Neon
 
 ## Tech stack
 
@@ -50,7 +50,19 @@ The application requires the following environment variables:
 
 For production deployment, the database is configured via a Neon PostgreSQL connection string.
 
+### Example
+
+```env
+DATABASE_URL=postgresql+psycopg2://username:password@hostname/dbname?sslmode=require
+SECRET_KEY=your_secret_key
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=60
+```
+
 ## Run and deployment
+
+The project uses an external PostgreSQL database hosted on Neon.  
+Docker Compose starts only the application container, while the database connection is provided through the `DATABASE_URL` environment variable.
 
 The application can be run locally using Docker:
 
